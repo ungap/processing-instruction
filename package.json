@@ -1,6 +1,6 @@
 {
   "name": "@ungap/processing-instruction",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A polyfill for ProcessingInstruction attributes",
   "main": "index.js",
   "module": "index.js",

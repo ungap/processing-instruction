@@ -1,0 +1,19 @@
+{
+  "name": "@ungap/processing-instruction",
+  "version": "0.0.0",
+  "description": "A polyfill for ProcessingInstruction attributes",
+  "main": "index.js",
+  "module": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ungap/processing-instruction.git"
+  },
+  "keywords": ["ProcessingInstruction", "polyfill", "shim"],
+  "author": "Andrea Giammarchi",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ungap/processing-instruction/issues"
+  },
+  "homepage": "https://github.com/ungap/processing-instruction#readme"
+}

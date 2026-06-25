@@ -4,4 +4,11 @@ A polyfill for [ProcessingInstruction attributes](https://github.com/whatwg/dom/
 
 ```js
 import patch from 'https://esm.run/@ungap/processing-instruction';
+
+const template = document.createElement('template');
+template.innerHTML = 'a<?b c="d" ?>c';
+
+[...patch(template.content).childNodes];
+
+// [text, b, text]
 ```

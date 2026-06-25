@@ -57,18 +57,18 @@ template.innerHTML = '<?t ?>';
 export default template.content.firstChild.nodeType === Node.COMMENT_NODE ?
   (dom => {
     const tw = document.createTreeWalker(dom, NodeFilter.SHOW_COMMENT);
-    let comment;
+    let comments = [], comment;
     while (comment = tw.nextNode()) {
       const { data } = comment;
       if (data.endsWith('?') && /^\?(\S+)/.test(data)) {
         const target = RegExp.$1;
-        comment.replaceWith(
-          document.createProcessingInstruction(
-            target,
-            data.slice(1 + target.length, -1).trim()
-          )
-        );
+        comments.push(comment, [target, data.slice(1 + target.length, -1).trim()]);
       }
+    }
+    for (let i = 0; i < comments.length; i += 2) {
+      comments[i].replaceWith(
+        document.createProcessingInstruction(...comments[i + 1])
+      );
     }
     return dom;
   }) :

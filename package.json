@@ -13,11 +13,19 @@
     "polyfill",
     "shim"
   ],
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
   "author": "Andrea Giammarchi",
   "license": "MIT",
   "type": "module",
   "bugs": {
     "url": "https://github.com/ungap/processing-instruction/issues"
   },
-  "homepage": "https://github.com/ungap/processing-instruction#readme"
+  "homepage": "https://github.com/ungap/processing-instruction#readme",
+  "dependencies": {
+    "html-escaper": "^3.0.3"
+  }
 }

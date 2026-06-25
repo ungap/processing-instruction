@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ProcessingInstruction</title>
+  <script
+    data-imports="html-escaper"
+    src="https://esm.run/data-imports"
+  ></script>
+  <script type="module">
+    import patch from './index.js';
+
+    const template = document.createElement('template');
+    template.innerHTML = 'a<?b ?>c<?d x="&" ?><?e ?>f';
+
+    const childNodes = [...patch(template.content).childNodes];
+    console.assert(childNodes[1].nodeType === Node.PROCESSING_INSTRUCTION_NODE);
+    console.assert(childNodes[3].nodeType === Node.PROCESSING_INSTRUCTION_NODE);
+    console.assert(childNodes[4].nodeType === Node.PROCESSING_INSTRUCTION_NODE);
+
+    console.assert(childNodes[1].target === 'b');
+    console.assert(childNodes[3].target === 'd');
+    console.assert(childNodes[4].target === 'e');
+
+    console.assert(childNodes[1].data === '');
+    console.assert(childNodes[3].data === 'x="&"');
+    console.assert(childNodes[4].data === '');
+  
+    console.assert(!childNodes[1].hasAttribute('x'));
+    console.assert(childNodes[3].hasAttribute('x'));
+    console.assert(!childNodes[4].hasAttribute('x'));
+
+    console.assert(childNodes[3].getAttribute('x') === '&');
+    console.assert(childNodes[3].getAttributeNames().length === 1);
+    console.assert(childNodes[3].getAttributeNames()[0] === 'x');
+
+    childNodes[3].setAttribute('x', 'a');
+    console.assert(childNodes[3].getAttribute('x') === 'a');
+    console.assert(childNodes[3].getAttributeNames().length === 1);
+    console.assert(childNodes[3].getAttributeNames()[0] === 'x');
+
+
+    childNodes[1].setAttribute('x', '>&<');
+    console.assert(childNodes[1].getAttribute('x') === '>&<');
+  </script>
+</head>
+</html>

@@ -1,17 +1,9 @@
+import { escape, unescape } from 'html-escaper';
+
 const { defineProperty } = Object;
 const { prototype } = ProcessingInstruction;
 const attributes = /(\S+?)=("|')([^\2]*?)\2/g;
 const attribute = name => new RegExp(`(\\s*)\\b${name}\\b=("|')([^\\2]*?)\\2`);
-
-// borrowed from html-escaper
-const es = /[&<>"']/g;
-const cape = c => {
-  if (c === '&') return '&amp;';
-  if (c === '<') return '&lt;';
-  if (c === '>') return '&gt;';
-  if (c === '"') return '&quot;';
-  return '&#39;';
-};
 
 for (const [key, value] of [
   ['hasAttribute', function hasAttribute(name) {
@@ -21,7 +13,7 @@ for (const [key, value] of [
     return !![...this.data.matchAll(attributes)].length;
   }],
   ['getAttribute', function getAttribute(name) {
-    return attribute(name).test(this.data) ? RegExp.$3 : null;
+    return attribute(name).test(this.data) ? unescape(RegExp.$3) : null;
   }],
   ['getAttributeNames', function getAttributeNames() {
     return [...this.data.matchAll(attributes)].map(([_, name]) => name);
@@ -31,7 +23,7 @@ for (const [key, value] of [
   }],
   ['setAttribute', function setAttribute(name, value) {
     const { data } = this;
-    value = String(value).replace(es, cape);
+    value = escape(value);
     if (attribute(name).test(data)) {
       const { $1, $2, $3 } = RegExp, prefix = $1 + name + '=' + $2;
       this.data = data.replace(prefix + $3, prefix + value);
